@@ -10,7 +10,6 @@ type CardProps = CardType & {
 const Card = ({
   gameSlug,
   position,
-  slug: _slug,
   image: _imageUri,
   revealed,
   resolved = false,
@@ -18,7 +17,7 @@ const Card = ({
 }: CardProps) => {
   const [loading, setLoading] = useState(false);
 
-  const [slug, setSlug] = useState<string | undefined>(_slug);
+  // const [slug, setSlug] = useState<string | undefined>(_slug);
   const [imageURI, setImageURI] = useState<string | undefined>(_imageUri);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ const Card = ({
 
       fetch(`/api/games/${gameSlug}/${position}`).then((res) => {
         res.json().then((json) => {
-          setSlug(json.slug);
+          // setSlug(json.slug);
           setImageURI(json.image);
           setLoading(false);
         });
