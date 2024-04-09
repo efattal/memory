@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/:match",
-      "destination": "https://ima.ghostspirit.net/:match"
+      "source": "/api/:match*",
+      "destination": "https://ima.ghostspirit.net/:match*"
     }
   ]
 }
