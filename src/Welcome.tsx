@@ -4,14 +4,14 @@ import {useCallback} from "react";
 const Welcome = () => {
     const navigate = useNavigate()
 
-    const createGame = useCallback(async () => {
+    const createGame = useCallback(async (level: "easy" | "hard") => {
         const res = await fetch("/api/games", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "level": "hard"
+                level
             })
         })
 
@@ -22,8 +22,9 @@ const Welcome = () => {
         }
     }, [navigate])
 
-    return <div>
-        <button onClick={() => createGame()}>Launch new game</button>
+    return <div className="welcome">
+        <button onClick={() => createGame("easy")}>👶 Play easy</button>
+        <button onClick={() => createGame("hard")}>🦸 Play hard</button>
     </div>
 }
 
