@@ -7,20 +7,30 @@ html, body {
     margin: 0;
 }
 
-.welcome {
-    display: flex;
-    align-items: center;
-}
-
 body {
     font-family: Tahoma, sans-serif;
     background-color: #e0e0e0;
 }
 
+.welcome {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4em;
+    padding-top: 4em;
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 600px) {
+    .welcome {
+        flex-direction: column;
+    }
+}
+
 .welcome button {
     display: block;
     font-size: 150%;
-    margin: 3em auto;
     border: 2px solid #fff;
     background-color: var(--mainColor);
     color: #fff;
@@ -30,7 +40,7 @@ body {
     box-shadow: #aaa 0 0 8px;
 }
 
-.welcome button:active{
+.welcome button:active {
     box-shadow: none;
 }
 
@@ -51,6 +61,7 @@ body {
     text-align: center;
     transition: transform 0.5s;
     transform-style: preserve-3d;
+    background-color: #fff;
     border-radius: 8px;
     border: 1px solid #d0d0d0;
     box-shadow: #aaa 0 0 8px;
