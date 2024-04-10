@@ -12,7 +12,7 @@ body {
     background-color: #e0e0e0;
 }
 
-.welcome {
+.play-bar {
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -23,12 +23,12 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-    .welcome {
+    .play-bar {
         flex-direction: column;
     }
 }
 
-.welcome button {
+.play-bar button {
     display: block;
     font-size: 150%;
     border: 2px solid #fff;
@@ -40,7 +40,7 @@ body {
     box-shadow: #aaa 0 0 8px;
 }
 
-.welcome button:active {
+.play-bar button:active {
     box-shadow: none;
 }
 
@@ -124,4 +124,8 @@ body {
 
 .card.resolved {
     animation: skew-x-shakeng 0.15s 4;
+}
+
+.congrats h2, p {
+    text-align: center;
 }

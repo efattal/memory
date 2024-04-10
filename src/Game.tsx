@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Card from "./Card.tsx";
 import { CardType, RawGame } from "./Types.ts";
+import Congrats from "./Congrats.tsx";
 
 const Game = () => {
   const { slug } = useParams();
@@ -9,20 +10,30 @@ const Game = () => {
   const [board, setBoard] = useState<CardType[] | undefined>();
   const [revealedCards, setRevealedCards] = useState<number[]>([]);
   const [tries, setTries] = useState(0);
+  const [success, setSuccess] = useState(false)
 
   const loadBoard = useCallback(({ board, resolvedCards }: RawGame) => {
-    setBoard(
-      board.map((cardSlug: string) => ({
-        slug: cardSlug,
-        resolved: cardSlug !== "?",
-        image: resolvedCards.find((card) => card.slug === cardSlug)?.image,
-        revealed: false,
-      })),
-    );
+    const foundAll = !board.includes("?")
+    setSuccess(foundAll)
+
+    if(!foundAll) {
+      setBoard(
+          board.map((cardSlug: string) => ({
+            slug: cardSlug,
+            resolved: cardSlug !== "?",
+            image: resolvedCards.find((card) => card.slug === cardSlug)?.image,
+            revealed: false,
+          })),
+      );
+    }
   }, []);
 
   useEffect(() => {
     if (slug) {
+      setRevealedCards([])
+      setTries(0)
+      setSuccess(false)
+
       fetch(`/api/games/${slug}`).then((res) => {
         res.json().then(loadBoard);
       });
@@ -59,7 +70,7 @@ const Game = () => {
   }, [revealedCards, reset, slug, loadBoard]);
 
   return (
-    <>
+      success ? <Congrats/> : <>
       <div>{tries} tries</div>
       <div>
         {board && slug
