@@ -1,5 +1,7 @@
 import { CardType } from "./Types.ts";
 import { useEffect, useState } from "react";
+import Loader from "./Loader.tsx";
+import {baseUrl} from "./Constants.ts";
 
 type CardProps = CardType & {
   gameSlug: string;
@@ -41,10 +43,10 @@ const Card = ({
           className="card-back"
           style={{
             ...(imageURI && {
-              backgroundImage: `url("https://ima.ghostspirit.net${imageURI}")`,
+              backgroundImage: `url("${baseUrl}${imageURI}")`,
             }),
           }}
-        >{loading && "..."}</div>
+        >{loading && <Loader/>}</div>
         <div className="card-front">Memo</div>
       </div>
     </div>

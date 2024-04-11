@@ -1,5 +1,5 @@
 :root {
-    --mainColor: #05396c
+    --color-primary: #05396c
 }
 
 html, body {
@@ -32,7 +32,7 @@ body {
     display: block;
     font-size: 150%;
     border: 2px solid #fff;
-    background-color: var(--mainColor);
+    background-color: var(--color-primary);
     color: #fff;
     padding: 8px 16px;
     border-radius: 8px;
@@ -81,7 +81,7 @@ body {
 }
 
 .card-front {
-    background-color: var(--mainColor);
+    background-color: var(--color-primary);
     width: 100%;
     height: 100%;
     border-radius: 8px;
@@ -126,6 +126,6 @@ body {
     animation: skew-x-shakeng 0.15s 4;
 }
 
-.congrats h2, p {
+h2, p {
     text-align: center;
 }

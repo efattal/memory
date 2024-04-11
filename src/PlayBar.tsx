@@ -7,7 +7,7 @@ const PlayBar = () => {
   const createGame = useCallback(
     async (level: "easy" | "hard") => {
       const res = await fetch("/api/games", {
-        method: "post",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
