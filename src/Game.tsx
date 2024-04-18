@@ -88,7 +88,7 @@ const Game = () => {
         {board && slug ? (
           board.map((card, index) => (
             <Card
-              key={index}
+              key={`${slug}-${index}`}
               gameSlug={slug}
               slug={card.slug}
               position={index}
