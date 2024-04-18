@@ -1,4 +1,4 @@
-import PlayBar from "./PlayBar.tsx";
+import PlayBar from "./components/PlayBar.tsx";
 
 const Welcome = () => {
   return <PlayBar />;

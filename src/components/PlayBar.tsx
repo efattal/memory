@@ -1,11 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import Loader from "./Loader.tsx";
+import Button from "./Button.tsx";
+import "./PlayBar.css"
 
 const PlayBar = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const createGame = useCallback(
     async (level: "easy" | "hard") => {
+      setLoading(true);
       const res = await fetch("/api/games", {
         method: "POST",
         headers: {
@@ -19,16 +24,22 @@ const PlayBar = () => {
       const json = await res.json();
       const slug = json.slug;
       if (slug) {
+        setLoading(false);
         navigate(`/games/${slug}`);
       }
     },
     [navigate],
   );
 
-  return (
-    <div className="play-bar">
-      <button onClick={() => createGame("easy")}>👶 Play easy</button>
-      <button onClick={() => createGame("hard")}>🦸 Play hard</button>
+  return loading ? (
+    <>
+      <h2>We'going to play</h2>
+      <Loader />
+    </>
+  ) : (
+    <div className="button-bar">
+      <Button onClick={() => createGame("easy")}>👶 Play easy</Button>
+      <Button onClick={() => createGame("hard")}>🦸 Play hard</Button>
     </div>
   );
 };

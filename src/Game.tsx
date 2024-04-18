@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Card from "./Card.tsx";
+import Card from "./components/Card.tsx";
 import { CardType, RawGame } from "./Types.ts";
 import Congrats from "./Congrats.tsx";
-import Loader from "./Loader.tsx";
+import Loader from "./components/Loader.tsx";
+import Button from "./components/Button.tsx";
 
 const Game = () => {
   const { slug } = useParams();
@@ -12,6 +13,7 @@ const Game = () => {
   const [revealedCards, setRevealedCards] = useState<number[]>([]);
   const [tries, setTries] = useState(0);
   const [success, setSuccess] = useState(false);
+  const [solutionRevealed, setSolutionRevealed] = useState(false);
 
   const loadBoard = useCallback(({ board, resolvedCards }: RawGame) => {
     const foundAll = !board.includes("?");
@@ -55,6 +57,10 @@ const Game = () => {
     [revealedCards.length],
   );
 
+  const revealSolution= useCallback(() => {
+      setSolutionRevealed(true)
+  }, [])
+
   useEffect(() => {
     if (revealedCards.length === 2) {
       setTries((count) => count + 1);
@@ -76,7 +82,7 @@ const Game = () => {
   return success ? (
     <Congrats />
   ) : (
-    <>
+    <div className="board">
       <h2>Tries: {tries}</h2>
       <div>
         {board && slug ? (
@@ -88,14 +94,17 @@ const Game = () => {
               position={index}
               onClick={() => onCardCLick(index)}
               revealed={revealedCards.includes(index)}
-              resolved={card.resolved}
+              resolved={solutionRevealed || card.resolved}
             />
           ))
         ) : (
           <Loader size="L" />
         )}
       </div>
-    </>
+      <div className="button-bar">
+        <Button onClick={() => revealSolution()}>Reveal solution</Button>
+      </div>
+    </div>
   );
 };
 

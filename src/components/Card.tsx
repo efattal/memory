@@ -1,7 +1,8 @@
-import { CardType } from "./Types.ts";
+import { CardType } from "../Types.ts";
 import { useEffect, useState } from "react";
 import Loader from "./Loader.tsx";
-import {baseUrl} from "./Constants.ts";
+import {baseUrl} from "../Constants.ts";
+import "./Card.css"
 
 type CardProps = CardType & {
   gameSlug: string;
