@@ -10,7 +10,7 @@ body {
 
 body {
     font-family: Tahoma, sans-serif;
-    background-color: #e0e0e0;
+    background-color: #fff;
 }
 
 .board {
@@ -21,4 +21,5 @@ body {
 h2,
 p {
     text-align: center;
+    margin: 0;
 }

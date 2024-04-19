@@ -5,6 +5,9 @@ import { CardType, RawGame } from "./Types.ts";
 import Congrats from "./Congrats.tsx";
 import Loader from "./components/Loader.tsx";
 import Button from "./components/Button.tsx";
+import ButtonBar from "./components/ButtonBar.tsx";
+import resolvePositions from "./utils/resolvePositions.ts";
+import loadGame from "./utils/loadGame.ts";
 
 const Game = () => {
   const { slug } = useParams();
@@ -17,9 +20,12 @@ const Game = () => {
 
   const loadBoard = useCallback(({ board, resolvedCards }: RawGame) => {
     const foundAll = !board.includes("?");
-    setSuccess(foundAll);
 
-    if (!foundAll) {
+    if (foundAll) {
+      setTimeout(() => {
+        setSuccess(true);
+      }, 3000)
+    } else {
       setBoard(
         board.map((cardSlug: string) => ({
           slug: cardSlug,
@@ -37,9 +43,11 @@ const Game = () => {
       setTries(0);
       setSuccess(false);
 
-      fetch(`/api/games/${slug}`).then((res) => {
-        res.json().then(loadBoard);
-      });
+      loadGame(slug).then(rawGame => {
+        if (rawGame) {
+          loadBoard(rawGame)
+        }
+      })
     }
   }, [loadBoard, slug]);
 
@@ -57,35 +65,36 @@ const Game = () => {
     [revealedCards.length],
   );
 
-  const revealSolution= useCallback(() => {
-      setSolutionRevealed(true)
+  const revealSolution = useCallback(() => {
+    setSolutionRevealed(revealed => !revealed)
   }, [])
 
   useEffect(() => {
-    if (revealedCards.length === 2) {
+    if (slug && revealedCards.length === 2) {
       setTries((count) => count + 1);
-      fetch(`/api/games/${slug}/resolve`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ positions: revealedCards }),
-      }).then((res) => {
-        if (res.ok) {
-          res.json().then(loadBoard);
+
+      resolvePositions(slug, revealedCards).then((rawGame) => {
+        if (rawGame) {
+          loadBoard(rawGame)
         }
         reset();
       });
     }
   }, [revealedCards, reset, slug, loadBoard]);
 
-  return success ? (
-    <Congrats />
-  ) : (
+  if (success) {
+    return <Congrats />
+  }
+
+  if (!board || !slug) {
+    return <Loader size="L" />
+  }
+
+  return (
     <div className="board">
       <h2>Tries: {tries}</h2>
       <div>
-        {board && slug ? (
+        {
           board.map((card, index) => (
             <Card
               key={`${slug}-${index}`}
@@ -97,13 +106,11 @@ const Game = () => {
               resolved={solutionRevealed || card.resolved}
             />
           ))
-        ) : (
-          <Loader size="L" />
-        )}
+        }
       </div>
-      <div className="button-bar">
-        <Button onClick={() => revealSolution()}>Reveal solution</Button>
-      </div>
+      <ButtonBar>
+        <Button onClick={revealSolution}>Reveal solution</Button>
+      </ButtonBar>
     </div>
   );
 };
